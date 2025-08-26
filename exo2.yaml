@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info: 
+  title: 
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /ping:
+    get:
+    responses:
+        :
+          description: pong
+          content:
+            Json:
+              schema:
+                type: 
+                example: {"id": 1, "name": "Alice", "email": "alice@example.com"}
