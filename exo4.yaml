@@ -1,0 +1,74 @@
+openapi: 3.0.3
+info:
+  title: API de gestion de produits
+  version: 1.0.0
+  description: API pour récupérer des produits avec paramètres de recherche et limite.
+
+paths:
+  /products:
+    get:
+      summary: Récupérer une liste de produits
+      parameters:
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/QParam'
+      responses:
+        '200':
+          description: Liste des produits correspondant aux critères
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                multipleProducts:
+                  summary: Plusieurs produits trouvés
+                  value:
+                    - name: Lait
+                      expiration_datetime: "2025-12-31T23:59:59Z"
+                      price: 1.5
+                    - name: Pain
+                      expiration_datetime: "2025-09-10T12:00:00Z"
+                      price: 0.9
+                emptyList:
+                  summary: Aucun produit trouvé
+                  value: []
+
+components:
+  parameters:
+    LimitParam:
+      name: limit
+      in: query
+      description: Nombre maximum d'éléments à retourner
+      required: false
+      schema:
+        type: integer
+        example: 10
+    QParam:
+      name: q
+      in: query
+      description: Terme de recherche
+      required: false
+      schema:
+        type: string
+        example: "lait"
+
+  schemas:
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Lait"
+        expiration_datetime:
+          type: string
+          format: date-time
+          example: "2025-12-31T23:59:59Z"
+        price:
+          type: number
+          format: float
+          example: 1.5
+      required:
+        - name
+        - expiration_datetime
+        - price

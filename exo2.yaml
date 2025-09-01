@@ -1,17 +1,55 @@
 openapi: 3.0.3
-info: 
-  title: 
+info:
+  title: API de gestion d'utilisateurs
   version: 1.0.0
-servers:
-  - url: http://localhost:8000
+  description: Une API pour récupérer les utilisateurs avec pagination.
+
 paths:
-  /ping:
+  /users:
     get:
-    responses:
-        :
-          description: pong
+      summary: Récupérer une liste d'utilisateurs
+      description: Retourne une liste d'utilisateurs avec pagination.
+      parameters:
+        - name: page
+          in: query
+          description: Numéro de la page
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          description: Nombre d'utilisateurs par page
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Liste des utilisateurs retrouvés
           content:
-            Json:
+            application/json:
               schema:
-                type: 
-                example: {"id": 1, "name": "Alice", "email": "alice@example.com"}
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: Alice
+                    email:
+                      type: string
+                      example: alice@example.com
+        '400':
+          description: Mauvais types de paramètres fournis
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad types for provided query parameters
